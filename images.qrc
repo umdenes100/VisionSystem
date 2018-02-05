@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="config">images/1414359012_config.png</file>
+        <file alias="communication">images/1414359054_communication.png</file>
+        <file alias="sent">images/1414373367_sign-out.png</file>
+        <file alias="received">images/1414373385_sign-in.png</file>
+        <file alias="connected">images/1414390893_check.png</file>
+    </qresource>
+</RCC>
