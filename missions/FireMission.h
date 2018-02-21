@@ -1,6 +1,6 @@
 #ifndef FIREMISSION_H
 #define FIREMISSION_H
-#include "mission.h"
+#include "Mission.h"
 
 class FireMission : public Mission
 {

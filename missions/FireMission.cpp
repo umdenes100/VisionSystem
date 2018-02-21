@@ -1,4 +1,4 @@
-#include "firemission.h"
+#include "FireMission.h"
 
 #include <QString>
 

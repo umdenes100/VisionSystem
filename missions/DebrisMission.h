@@ -1,6 +1,6 @@
 #ifndef DEBRISMISSION_H
 #define DEBRISMISSION_H
-#include "mission.h"
+#include "Mission.h"
 
 class DebrisMission : public Mission
 {

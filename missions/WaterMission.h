@@ -1,6 +1,6 @@
 #ifndef WATERMISSION_H
 #define WATERMISSION_H
-#include "mission.h"
+#include "Mission.h"
 
 class WaterMission : public Mission
 {

@@ -1,4 +1,4 @@
-#include "watermission.h"
+#include "WaterMission.h"
 
 #include <QString>
 

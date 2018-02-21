@@ -1,6 +1,6 @@
 #ifndef BLACKBOXMISSION_H
 #define BLACKBOXMISSION_H
-#include "mission.h"
+#include "Mission.h"
 #include <QString>
 
 class BlackBoxMission : public Mission

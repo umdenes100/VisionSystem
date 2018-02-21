@@ -1,4 +1,4 @@
-#include "debrismission.h"
+#include "DebrisMission.h"
 
 #include <QString>
 #include <QDebug>
