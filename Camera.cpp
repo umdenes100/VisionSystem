@@ -28,6 +28,7 @@ void Camera::applySettings(uint cameraDevice, QSize resolution, uint frameRate, 
     mCameraDevice = cameraDevice;
     mVideoCapture.open(cameraDevice);
 
+    mVideoCapture.set(cv::CAP_PROP_FOURCC, CV_FOURCC('M','J','P','G'));
     mVideoCapture.set(cv::CAP_PROP_FRAME_WIDTH, resolution.width());
     mVideoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, resolution.height());
 
