@@ -65,6 +65,7 @@ void MainWindow::onApplySettingsClicked()
     float markerSize = ui->markerSizeLineEdit->text().toFloat();
 
     mCamera.applySettings(cameraDevice, resolution, frameRate, markerSize);
+    this->on_resetCamera_clicked();
 
     // Arena size
     float width = ui->arenaWidthLineEdit->text().toFloat();
@@ -92,3 +93,17 @@ void MainWindow::fillDefaultSettings()
     onApplySettingsClicked();
 }
 
+
+void MainWindow::on_resetCamera_clicked()
+{
+   mCamera.resetCamera();
+   if (mCamera.isBestekerCamera) {
+       ui->cameraFocusSlider->setValue(0);
+       ui->cameraBrightnessSlider->setValue(0);
+       ui->cameraSharpnessSlider->setValue(255);
+   } else {
+       ui->cameraFocusSlider->setValue(128);
+       ui->cameraBrightnessSlider->setValue(128);
+       ui->cameraSharpnessSlider->setValue(128);
+   }
+}

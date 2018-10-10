@@ -23,6 +23,7 @@ private slots:
     void onNewFrame(QImage image);
     void onApplySettingsClicked();
     void onRandomizeButtonClicked();
+    void on_resetCamera_clicked();
 
 private:
     Ui::MainWindow *ui;
