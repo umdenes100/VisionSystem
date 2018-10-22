@@ -6,7 +6,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
-#include <aruco/aruco.h>
+#include <opencv2/aruco.hpp>
+//#include <aruco/aruco.h>
 #include <QObject>
 #include <QTimer>
 #include <QImage>
@@ -44,8 +45,8 @@ private:
     QTimer mCaptureTimer;
 
     cv::VideoCapture mVideoCapture;
-    aruco::MarkerDetector mMarkerDetector;
-    aruco::CameraParameters mCameraParameters;
+    //cv::aruco::MarkerDetector mMarkerDetector;
+    //cv::aruco::CameraParameters mCameraParameters;
 
     float mMarkerSize;
 

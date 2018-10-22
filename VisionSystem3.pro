@@ -42,7 +42,8 @@ HEADERS  += Arena.h\
     missions/ChemicalMission.h\
     missions/DebrisMission.h\
     missions/FireMission.h\
-    missions/WaterMission.h
+    missions/WaterMission.h \
+    ArucoMarker.h
 
 FORMS    += MainWindow.ui \
     SerialPortWidget.ui \
@@ -50,7 +51,8 @@ FORMS    += MainWindow.ui \
 
 RESOURCES += images.qrc
 
-unix|win32: LIBS += -L/usr/local/lib -laruco -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc
+# -laruco
+unix|win32: LIBS += -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_aruco -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc
 
 INCLUDEPATH += /usr/local/include
 DEPENDPATH += /usr/local/include
