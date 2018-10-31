@@ -20,7 +20,7 @@ void Camera::capture() {
 
         std::vector<int> markerIds;
         std::vector<std::vector<cv::Point2f>> markerCorners;
-        cv::Ptr<cv::aruco::Dictionary> markerDictionary = cv::aruco::getPredefinedDictionary(cv::aruco::PREDEFINED_DICTIONARY_NAME::DICT_ARUCO_ORIGINAL);
+        cv::Ptr<cv::aruco::Dictionary> markerDictionary = cv::aruco::getPredefinedDictionary(cv::aruco::PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
 
         cv::aruco::detectMarkers(image, markerDictionary, markerCorners, markerIds);
         cv::aruco::drawDetectedMarkers(image, markerCorners, markerIds);
