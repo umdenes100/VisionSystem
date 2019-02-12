@@ -36,6 +36,7 @@ cv::Point Arena::cameraCoordinate(float x, float y) {
 
 // Draws the starting position, obstacles, and destination
 void Arena::draw(cv::Mat& image) {
+    
     if (mDrawObstacles) {
         for (int i = 0; i < 3; i++) {
             drawRectangle(image, mObstacles[i].x, mObstacles[i].y, mObstacles[i].width, mObstacles[i].height);
@@ -130,9 +131,7 @@ void Arena::processMarkers(cv::Mat& image, std::vector<ArucoMarker>& markers) {
 
             // Draw an arrow indicating the orientation
             cv::arrowedLine(image,
-                // cv::Point(marker[0].x, marker[0].y),
                 cv::Point(marker.x[0], marker.y[0]),
-                // cv::Point(marker[1].x, marker[1].y),
                 cv::Point(marker.x[1], marker.y[1]),
                 cv::Scalar(0, 255, 0),
                 3,
@@ -249,9 +248,7 @@ Marker Arena::translate(ArucoMarker m) {
     float theta = mTheta - atan2(m.y[1] - m.y[0], m.x[1] - m.x[0]);
 
     // Subtract away the origin
-    // float fx = m[0].x - mOriginPx[0];
     float fx = m.x[0] - mOriginPx[0];
-    // float fy = mOriginPx[1] - m[0].y;
     float fy = mOriginPx[1] - m.y[0];
 
     // Convert camera frame of reference to arena frame of reference
@@ -261,6 +258,7 @@ Marker Arena::translate(ArucoMarker m) {
     // Shift measurement to center of marker
     // float markerSide = sqrt((m[1].x - m[0].x)*(m[1].x - m[0].x) + (m[1].y - m[0].y)*(m[1].y - m[0].y));
     float markerSide = sqrt((m.x[1] - m.x[0])*(m.x[1] - m.x[0]) + (m.y[1] - m.y[0])*(m.y[1] - m.y[0]));
+
     if (cos(theta) >= 0) {
         A += sqrt(2) * markerSide / 2 * cos(PI/4 - theta);
         B -= sqrt(2) * markerSide / 2 * sin(PI/4 - theta);
