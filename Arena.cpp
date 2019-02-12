@@ -47,7 +47,7 @@ void Arena::draw(cv::Mat& image) {
     }
 
     if (mDrawCustom) {
-        mArena.drawCircle(image, mCustomCoordinate.x, mCustomCoordinate.y, 0.09);
+        drawCircle(image, mCustomCoordinate.x, mCustomCoordinate.y, 0.09);
     }
 
     drawRectangle(image, mStartingLocation.x - 0.175, mStartingLocation.y + 0.175, 0.35, 0.35);
