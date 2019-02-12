@@ -1,13 +1,11 @@
 #include "Camera.h"
-#include "ArucoMarker.h"
-#include "QRegularExpression"
-#include "QDebug"
 #include <QProcess>
+#include <QDebug>
 
 Camera::Camera(Arena& arena) : QObject(), mArena(arena) {
     connect(&mCaptureTimer, SIGNAL(timeout()), SLOT(capture()));
-    // mMarkerDetector.setDetectionMode(aruco::DM_VIDEO_FAST, 0.0001);
     isBestekerCamera = false;
+    mArena.randomize();
 }
 
 void Camera::capture() {
@@ -25,16 +23,14 @@ void Camera::capture() {
         cv::aruco::detectMarkers(image, markerDictionary, markerCorners, markerIds);
         cv::aruco::drawDetectedMarkers(image, markerCorners, markerIds);
 
-        for(int i = 0; i < markerIds.size(); i++) {
+        for(uint i = 0; i < markerIds.size(); i++) {
             // qDebug() << markerCorners[i][1].x << ", " << markerCorners[i][0].x;
             ArucoMarker m(markerIds[i], markerCorners[i][0].x, markerCorners[i][1].x, markerCorners[i][0].y, markerCorners[i][1].y);
             markers.push_back(m);
         }
 
-        // mMarkerDetector.detect(image, markers, mCameraParameters, mMarkerSize);
-
         mArena.processMarkers(image, markers);
-        mArena.draw(image, mDrawObstacles, mDrawDestination);
+        mArena.draw(image);
 
         emit newFrame(cvMatToQImage(image));
     }
@@ -50,13 +46,15 @@ void Camera::applySettings(uint cameraDevice, QSize resolution, uint frameRate, 
     process.waitForFinished(-1);
 
     if (process.readAllStandardOutput().indexOf(bestekerCamera) != -1) {
-        //check for whether a live camera is plugged in (Besteker)
-        //Besteker has different brightness, sharpness settings and doesn't have a focus option
+        // check for whether a live camera is plugged in (Besteker)
+        // Besteker has different brightness, sharpness settings and doesn't have a focus option
         isBestekerCamera = true;
+    } else {
+        isBestekerCamera = false;
     }
 
     mVideoCapture.open(cameraDevice);
-    // mVideoCapture.set(cv::CAP_PROP_FOURCC, CV_FOURCC('M','J','P','G'));
+
     mVideoCapture.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
     mVideoCapture.set(cv::CAP_PROP_FRAME_WIDTH, resolution.width());
     mVideoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, resolution.height());
@@ -64,26 +62,6 @@ void Camera::applySettings(uint cameraDevice, QSize resolution, uint frameRate, 
     mCaptureTimer.start(frameRate);
 
     mMarkerSize = markerSize;
-}
-
-void Camera::onCustomXChanged(double x) {
-    mCustomCoordinate.x = static_cast<float>(x);
-}
-
-void Camera::onCustomYChanged(double y) {
-    mCustomCoordinate.y = static_cast<float>(y);
-}
-
-void Camera::onDrawCustomChanged(bool draw) {
-    mDrawCustom = draw;
-}
-
-void Camera::onDrawDestinationChanged(bool draw) {
-    mDrawDestination = draw;
-}
-
-void Camera::onDrawObstaclesChanged(bool draw) {
-    mDrawObstacles = draw;
 }
 
 void Camera::onFocusChanged(int focus) {
@@ -127,7 +105,7 @@ void Camera::onBrightnessChanged(int brightness) {
 }
 
 void Camera::resetCamera() {
-    //'v4l2-ctl -d /dev/video2 --all' lists default values for the camera
+    // 'v4l2-ctl -d /dev/video2 --all' lists default values for the camera
     int sharpness, brightness, contrast;
     QString command;
     if (isBestekerCamera) {
@@ -140,28 +118,28 @@ void Camera::resetCamera() {
         brightness = 128;
     }
 
-    //set sharpness
+    // set sharpness
     command = command + QString("v4l2-ctl -d /dev/video");
     command = command + QString::number(mCameraDevice);
     command = command + QString(" -c sharpness=");
     command = command + QString::number(sharpness);
     system(command.toStdString().c_str());
 
-    //set brightness
+    // set brightness
     command = QString("v4l2-ctl -d /dev/video");
     command = command + QString::number(mCameraDevice);
     command = command + QString(" -c brightness=");
     command = command + QString::number(brightness);
     system(command.toStdString().c_str());
 
-    //set contrast
+    // set contrast
     command = QString("v4l2-ctl -d /dev/video");
     command = command + QString::number(mCameraDevice);
     command = command + QString(" -c contrast=");
     command = command + QString::number(contrast);
     system(command.toStdString().c_str());
 
-    //set focus
+    // set focus
     if (!isBestekerCamera) {
         command = QString("v4l2-ctl -d /dev/video");
         command = command + QString::number(mCameraDevice);
@@ -203,7 +181,7 @@ inline QImage Camera::cvMatToQImage(const cv::Mat& inMat)
             return image;
         }
         default:
-            //qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
+            // qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
             break;
     }
 
