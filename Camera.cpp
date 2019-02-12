@@ -36,10 +36,6 @@ void Camera::capture() {
         mArena.processMarkers(image, markers);
         mArena.draw(image, mDrawObstacles, mDrawDestination);
 
-        if (mDrawCustom) {
-            mArena.drawCircle(image, mCustomCoordinate.x, mCustomCoordinate.y, 0.09);
-        }
-
         emit newFrame(cvMatToQImage(image));
     }
 }

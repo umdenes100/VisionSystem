@@ -7,7 +7,6 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/aruco.hpp>
-//#include <aruco/aruco.h>
 #include <QObject>
 #include <QTimer>
 #include <QImage>
@@ -25,11 +24,6 @@ public:
 public slots:
     void applySettings(uint cameraDevice, QSize resolution, uint frameRate, float markerSize);
     void onBrightnessChanged(int brightness);
-    void onCustomXChanged(double x);
-    void onCustomYChanged(double y);
-    void onDrawCustomChanged(bool draw);
-    void onDrawDestinationChanged(bool draw);
-    void onDrawObstaclesChanged(bool draw);
     void onFocusChanged(int focus);
     void onSharpnessChanged(int sharpness);
 
@@ -50,18 +44,12 @@ private:
 
     float mMarkerSize;
 
-    Arena& mArena;
-
-    bool mDrawCustom;
-    bool mDrawObstacles;
-    bool mDrawDestination;
-
-    Position mCustomCoordinate;
-
     uint mCameraDevice;
     uint mBrightness;
     uint mFocus;
     uint mSharpness;
+
+    Arena& mArena;
 };
 
 #endif // CAMERA_H
