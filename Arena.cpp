@@ -32,14 +32,14 @@ cv::Point Arena::cameraCoordinate(float x, float y) {
 }
 
 // Draws the starting position, obstacles, and destination
-void Arena::draw(cv::Mat& image, bool drawObstacles, bool drawDestination) {
-    if (drawObstacles) {
+void Arena::draw(cv::Mat& image) {
+    if (mDrawObstacles) {
         for (int i = 0; i < 3; i++) {
             drawRectangle(image, mObstacles[i].x, mObstacles[i].y, mObstacles[i].width, mObstacles[i].height);
         }
     }
 
-    if (drawDestination) {
+    if (mDrawDestination) {
         drawCircle(image, mTargetLocation.x, mTargetLocation.y, TARGET_DIAMETER / 2);
     }
 
@@ -268,8 +268,28 @@ Marker Arena::translate(ArucoMarker m) {
     return Marker(m.id, x, y, theta);
 }
 
-Position Arena::getTargetLocation(){
+Position Arena::getTargetLocation() {
     return mTargetLocation;
+}
+
+void Arena::onCustomXChanged(double x) {
+    mCustomCoordinate.x = static_cast<float>(x);
+}
+
+void Arena::onCustomYChanged(double y) {
+    mCustomCoordinate.y = static_cast<float>(y);
+}
+
+void Arena::onDrawCustomChanged(bool draw) {
+    mDrawCustom = draw;
+}
+
+void Arena::onDrawDestinationChanged(bool draw) {
+    mDrawDestination = draw;
+}
+
+void Arena::onDrawObstaclesChanged(bool draw) {
+    mDrawObstacles = draw;
 }
 
 inline float Arena::max(float a, float b) {
