@@ -16,6 +16,9 @@ Arena::Arena()
     mObstacles[0] = {2.0, 2.0, 1.0, 1.0};
     mObstacles[1] = {3.0, 1.5, 0.8, 0.2};
     mObstacles[2] = {1.5, 3.2, 1.2, 1.4};
+//    mPpm = 1;
+    mWidthM = 4;
+    mHeightM = 2;
 }
 
 // Converts arena coordinates into pixel coordinates
@@ -103,7 +106,7 @@ bool Arena::getPosition(int markerId, Marker& marker) {
 // Translates and stores a set of detected markers
 void Arena::processMarkers(cv::Mat& image, std::vector<ArucoMarker>& markers) {
     mMarkers.clear();
-    // foreach (aruco::Marker marker, markers) {
+
     foreach (ArucoMarker marker, markers) {
         // marker.draw(image, cv::Scalar(0, 0, 255), 2);
 
@@ -118,7 +121,8 @@ void Arena::processMarkers(cv::Mat& image, std::vector<ArucoMarker>& markers) {
             // mXAxisPx[1] = marker[0].y;
             mXAxisPx[1] = marker.y[0];
         } else {
-            mMarkers.insert(marker.id, translate(marker));
+            Marker temp = translate(marker);
+            mMarkers.insert(marker.id, temp);
 
             // Draw an arrow indicating the orientation
             cv::arrowedLine(image,
@@ -139,7 +143,7 @@ void Arena::processMarkers(cv::Mat& image, std::vector<ArucoMarker>& markers) {
     mPpm = sqrt((mXAxisPx[0] - mOriginPx[0])*(mXAxisPx[0] - mOriginPx[0]) +
         (mXAxisPx[1] - mOriginPx[1]) * (mXAxisPx[1] - mOriginPx[1])) / mWidthM;
     // Calculate the tilt of the arena in this frame
-    mTheta = -atan2(mXAxisPx[1] - mOriginPx[1], mXAxisPx[0] - mOriginPx[0]);
+    mTheta = - atan2(mXAxisPx[1] - mOriginPx[1], mXAxisPx[0] - mOriginPx[0]);
 }
 
 // Randomizes mission variables
@@ -265,7 +269,9 @@ Marker Arena::translate(ArucoMarker m) {
     float x = A / mPpm;
     float y = B / mPpm;
 
-    return Marker(m.id, x, y, theta);
+    Marker marker = Marker(m.id, x, y, theta);
+
+    return marker;
 }
 
 Position Arena::getTargetLocation() {
